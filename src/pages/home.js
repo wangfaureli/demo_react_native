@@ -1,6 +1,4 @@
-import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
 import {
   View,
   VirtualizedList,
@@ -9,11 +7,9 @@ import {
   Text,
   ImageBackground,
 } from 'react-native';
-import AppbarComponent from './src/components/appbar';
-import {Card, Button} from 'react-native-paper';
-import Page2 from './src/pages/page2';
-
-const Stack = createNativeStackNavigator();
+import AppbarComponent from 'components/appbar';
+import {Card} from 'react-native-paper';
+// import {StackNavigator} from 'react-navigation';
 
 const DATA = [
   {
@@ -67,11 +63,14 @@ const getItem = (data, index) => ({
 
 const getItemCount = data => DATA.length;
 
-const Item = ({title, image, chapter, onPress}) => {
+const Item = ({title, image, chapter}) => {
   console.log(title);
   return (
     <View style={styles.item}>
-      <Card onPress={onPress}>
+      <Card
+        onPress={() => {
+          this.props.navigation.navigate('Tow');
+        }}>
         <ImageBackground source={image} style={styles.image}>
           <Text>{chapter}</Text>
           <Text style={styles.title}>{title}</Text>
@@ -81,10 +80,10 @@ const Item = ({title, image, chapter, onPress}) => {
   );
 };
 
-const HomeScreen = ({ navigation }) => {
-  const  onPress=() => navigation.navigate('page2')
+const HomeScreen = () => {
   return (
     <>
+      <AppbarComponent />
       <View style={styles.container}>
         <VirtualizedList
           data={DATA}
@@ -95,33 +94,14 @@ const HomeScreen = ({ navigation }) => {
               image={item.image}
               chapter={item.chapter}
               key={item}
-              onPress={onPress}
             />
           )}
           keyExtractor={item => item.key}
           getItemCount={getItemCount}
           getItem={getItem}
-          onPress={() => navigation.navigate('page2')}
         />
       </View>
     </>
-  );
-};
-
-
-
-
-const App = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-        />
-        <Stack.Screen name="page2" component={Page2} />
-      </Stack.Navigator>
-    </NavigationContainer>
   );
 };
 
@@ -147,4 +127,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default HomeScreen;
